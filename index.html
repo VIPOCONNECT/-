@@ -1,0 +1,1906 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>סטודיו דיגיטל - אתרים מוכנים בתלת-ממד</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(45deg, #16213e, #0f3460, #533483, #16213e);
+            background-size: 400% 400%;
+            animation: gradientAnimation 15s ease infinite;
+            color: #fff;
+            min-height: 100vh;
+            overflow-x: hidden;
+            font-size: 16px;
+        }
+        
+        @keyframes gradientAnimation {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+        
+        header {
+            padding: 1rem;
+            background-color: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+            position: fixed;
+            width: 100%;
+            z-index: 1000;
+            top: 0;
+            right: 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            background: linear-gradient(90deg, #e0fbfc, #98c1d9);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 10px rgba(224, 251, 252, 0.5);
+        }
+        
+        nav {
+            display: flex;
+            align-items: center;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+        
+        nav ul li {
+            margin-right: 1.5rem;
+            perspective: 800px;
+        }
+        
+        nav ul li a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 1.1rem;
+            transition: all 0.3s;
+            display: block;
+            padding: 8px 15px;
+            background: rgba(61, 90, 128, 0.2);
+            border-radius: 5px;
+            transform-style: preserve-3d;
+            transform: translateZ(0);
+        }
+        
+        nav ul li a:hover {
+            color: #98c1d9;
+            transform: translateZ(20px) rotateX(10deg);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+        }
+        
+        nav ul li a::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 10px;
+            background: rgba(61, 90, 128, 0.4);
+            bottom: -10px;
+            left: 0;
+            transform-origin: top;
+            transform: rotateX(-90deg);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        
+        nav ul li a:hover::before {
+            opacity: 1;
+        }
+        
+        .main-container {
+            max-width: 1400px;
+            width: 90%;
+            margin: 0 auto;
+            padding-top: 100px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .hero-section {
+            text-align: center;
+            margin-bottom: 50px;
+            width: 100%;
+            max-width: 800px;
+        }
+        
+        .hero-section p {
+            font-size: 1.2rem;
+            margin: 20px 0;
+            line-height: 1.6;
+            color: #e0fbfc;
+        }
+        
+        .hero-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 30px;
+        }
+        
+        .three-d-button {
+            padding: 15px 30px;
+            font-size: 1.1rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .three-d-button::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 20px;
+            background: inherit;
+            left: 0;
+            bottom: -20px;
+            transform-origin: top;
+            transform: rotateX(-90deg);
+        }
+        
+        .three-d-button::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 100%;
+            background: inherit;
+            top: 0;
+            right: -20px;
+            transform-origin: left;
+            transform: rotateY(90deg);
+        }
+        
+        .three-d-button.primary {
+            background: linear-gradient(135deg, #3d5a80, #2c3e50);
+            color: white;
+        }
+        
+        .three-d-button.primary:hover {
+            background: linear-gradient(135deg, #2c3e50, #3d5a80);
+        }
+        
+        .three-d-button.secondary {
+            background: transparent;
+            color: #98c1d9;
+            border: 2px solid #98c1d9;
+        }
+        
+        .three-d-button.secondary:hover {
+            background-color: rgba(152, 193, 217, 0.1);
+        }
+        
+        /* קוביה תלת-ממדית */
+        .scene {
+            width: 400px;
+            height: 400px;
+            margin: 30px auto;
+            perspective: 1000px;
+            transform-style: preserve-3d;
+            animation: floatUpDown 5s ease-in-out infinite;
+        }
+        
+        @keyframes floatUpDown {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-15px);
+            }
+        }
+        
+        .cube {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            transform: translateZ(-200px);
+            transition: transform 0.5s;
+        }
+        
+        /* מסיר את האנימציה האוטומטית ומחליף אותה בטרנזישן */
+        /* @keyframes rotate {
+            0% {
+                transform: translateZ(-200px) rotateX(0deg) rotateY(0deg);
+            }
+            100% {
+                transform: translateZ(-200px) rotateX(360deg) rotateY(360deg);
+            }
+        } */
+        
+        /* סרגל כלים לשליטה בקוביה */
+        .cube-controls {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            margin: 20px auto;
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            border-radius: 10px;
+            width: fit-content;
+        }
+        
+        .cube-controls button {
+            background: linear-gradient(135deg, #0f3460, #16213e);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 8px 12px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .cube-controls button:hover {
+            background: linear-gradient(135deg, #16213e, #0f3460);
+            transform: scale(1.05);
+        }
+        
+        .cube-controls .auto-rotate {
+            background: linear-gradient(135deg, #e94560, #533483);
+        }
+        
+        .cube-controls .auto-rotate.active {
+            background: linear-gradient(135deg, #533483, #e94560);
+        }
+        
+        .cube:hover {
+            cursor: pointer;
+        }
+        
+        .cube__face {
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            background-color: rgba(0, 0, 0, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            cursor: pointer;
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .cube__face:hover {
+            box-shadow: 0 0 20px rgba(152, 193, 217, 0.8);
+        }
+        
+        .cube__face img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.7;
+            transition: opacity 0.3s, transform 0.3s;
+            transform-style: preserve-3d;
+            transform: translateZ(0);
+        }
+        
+        .cube__face:hover img {
+            opacity: 1;
+            transform: translateZ(20px) scale(1.05);
+            filter: brightness(1.2);
+        }
+        
+        .cube__face--front {
+            transform: rotateY(0deg) translateZ(200px);
+        }
+        
+        .cube__face--right {
+            transform: rotateY(90deg) translateZ(200px);
+        }
+        
+        .cube__face--back {
+            transform: rotateY(180deg) translateZ(200px);
+        }
+        
+        .cube__face--left {
+            transform: rotateY(-90deg) translateZ(200px);
+        }
+        
+        .cube__face--top {
+            transform: rotateX(90deg) translateZ(200px);
+        }
+        
+        .cube__face--bottom {
+            transform: rotateX(-90deg) translateZ(200px);
+        }
+        
+        .cube__face-title {
+            position: absolute;
+            bottom: 20px;
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 10px 15px;
+            border-radius: 5px;
+            font-weight: bold;
+            z-index: 2;
+        }
+        
+        /* אנימציות לפאות הקוביה */
+        .cube__face {
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            border: 2px solid rgba(152, 193, 217, 0.3);
+            border-radius: 15px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            text-align: center;
+            padding: 20px;
+            background-color: rgba(22, 33, 62, 0.7);
+            backdrop-filter: blur(5px);
+            transition: all 0.5s;
+        }
+        
+        .cube__face:hover {
+            transform-origin: center;
+            animation: pulseGlow 2s infinite;
+            border-color: rgba(152, 193, 217, 0.8);
+            box-shadow: 0 0 15px rgba(152, 193, 217, 0.5);
+        }
+        
+        @keyframes pulseGlow {
+            0% {
+                box-shadow: 0 0 10px rgba(152, 193, 217, 0.5);
+            }
+            50% {
+                box-shadow: 0 0 20px rgba(152, 193, 217, 0.8), 0 0 30px rgba(152, 193, 217, 0.4);
+            }
+            100% {
+                box-shadow: 0 0 10px rgba(152, 193, 217, 0.5);
+            }
+        }
+        
+        .cube__face__content {
+            transform: translateZ(20px);
+            transition: transform 0.3s;
+        }
+        
+        .cube__face:hover .cube__face__content {
+            transform: translateZ(30px) scale(1.05);
+        }
+        
+        /* אנימציות לכפתורי המודאל */
+        .preview-btn {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s;
+            z-index: 1;
+        }
+        
+        .preview-btn:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: all 0.6s;
+            z-index: -1;
+        }
+        
+        .preview-btn:hover:before {
+            left: 100%;
+            animation: shimmer 1.5s infinite;
+        }
+        
+        @keyframes shimmer {
+            0% {
+                left: -100%;
+            }
+            100% {
+                left: 100%;
+            }
+        }
+        
+        /* אנימציה למעבר בין תצוגות במודאל */
+        .device-switcher button {
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .device-switcher button:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #98c1d9;
+            transition: width 0.3s;
+        }
+        
+        .device-switcher button:hover:after,
+        .device-switcher button.active:after {
+            width: 100%;
+        }
+        
+        .device-switcher button.active {
+            transform: translateY(-3px);
+            text-shadow: 0 0 5px rgba(152, 193, 217, 0.8);
+        }
+        
+        /* כותרת תלת-ממדית */
+        .three-d-title {
+            position: relative;
+            font-size: 4rem;
+            font-weight: bold;
+            text-align: center;
+            transform-style: preserve-3d;
+            margin-bottom: 30px;
+            text-shadow: 0 1px 0 #ccc,
+                         0 2px 0 #c9c9c9,
+                         0 3px 0 #bbb,
+                         0 4px 0 #b9b9b9,
+                         0 5px 0 #aaa,
+                         0 6px 1px rgba(0,0,0,.1),
+                         0 0 5px rgba(0,0,0,.1),
+                         0 1px 3px rgba(0,0,0,.3),
+                         0 3px 5px rgba(0,0,0,.2),
+                         0 5px 10px rgba(0,0,0,.25),
+                         0 10px 10px rgba(0,0,0,.2),
+                         0 20px 20px rgba(0,0,0,.15);
+            animation: float 6s ease-in-out infinite;
+            background: linear-gradient(90deg, #e0fbfc, #98c1d9, #3d5a80);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        @keyframes float {
+            0% {
+                transform: translateZ(0px);
+            }
+            50% {
+                transform: translateZ(20px) translateY(-10px);
+            }
+            100% {
+                transform: translateZ(0px);
+            }
+        }
+        
+        /* אנימציות רקע */
+        @keyframes shineEffect {
+            0% {
+                left: -50%;
+                top: -50%;
+            }
+            100% {
+                left: 150%;
+                top: 150%;
+            }
+        }
+        
+        /* אנימציות לכפתורים */
+        .neon-button {
+            display: inline-block;
+            padding: 12px 25px;
+            font-size: 1rem;
+            font-weight: 600;
+            color: #fff;
+            background: linear-gradient(45deg, #3d5a80, #98c1d9);
+            border: none;
+            border-radius: 30px;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .neon-button:before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, rgba(255,255,255,0), rgba(255,255,255,0.3), rgba(255,255,255,0));
+            transform: rotate(45deg);
+            animation: shineEffect 3s infinite;
+            pointer-events: none;
+        }
+        
+        .neon-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+            background: linear-gradient(45deg, #98c1d9, #3d5a80);
+        }
+        
+        .neon-button:active {
+            transform: translateY(1px);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+        
+        /* אנימציה לאייקונים */
+        .animated-icon {
+            animation: pulse 2s infinite;
+            transition: all 0.3s;
+        }
+        
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            50% {
+                transform: scale(1.05);
+                opacity: 0.8;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+        
+        .animated-icon:hover {
+            animation: rotateGlow 1.5s infinite;
+        }
+        
+        @keyframes rotateGlow {
+            0% {
+                box-shadow: 0 0 10px rgba(152, 193, 217, 0.5);
+                transform: rotate(0deg);
+            }
+            50% {
+                box-shadow: 0 0 20px rgba(152, 193, 217, 0.8);
+                transform: rotate(180deg);
+            }
+            100% {
+                box-shadow: 0 0 10px rgba(152, 193, 217, 0.5);
+                transform: rotate(360deg);
+            }
+        }
+        
+        /* אנימציה לתפריט */
+        .mobile-menu-btn {
+            position: relative;
+            overflow: hidden;
+            display: none;
+        }
+        
+        .mobile-menu-btn:after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(152, 193, 217, 0.4) 0%, rgba(152, 193, 217, 0) 70%);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        
+        .mobile-menu-btn:hover:after {
+            opacity: 1;
+            animation: pulseLight 1.5s infinite;
+        }
+        
+        @keyframes pulseLight {
+            0%, 100% {
+                transform: scale(1);
+                opacity: 0.5;
+            }
+            50% {
+                transform: scale(1.2);
+                opacity: 0.8;
+            }
+        }
+        
+        /* כותרת תלת-ממדית */
+        .three-d-title {
+            position: relative;
+        }
+        
+        .three-d-title:after {
+            content: attr(data-text);
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: linear-gradient(45deg, rgba(152, 193, 217, 0.3), rgba(61, 90, 128, 0.3));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            color: transparent;
+            filter: blur(8px);
+            animation: glowText 3s infinite alternate;
+        }
+        
+        @keyframes glowText {
+            0% {
+                filter: blur(8px);
+                transform: translateX(-3px);
+            }
+            100% {
+                filter: blur(12px);
+                transform: translateX(3px);
+            }
+        }
+        
+        /* אנימציות לתפריט הניווט ולכפתורי גלילה */
+        header nav ul li a {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+        
+        header nav ul li a:before {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            right: 0;
+            width: 0;
+            height: 2px;
+            background-color: #98c1d9;
+            transition: width 0.3s ease;
+        }
+        
+        header nav ul li a:hover:before {
+            width: 100%;
+            right: auto;
+            left: 0;
+        }
+        
+        header nav ul li a:hover {
+            color: #98c1d9;
+            transform: translateY(-3px);
+            text-shadow: 0 0 8px rgba(152, 193, 217, 0.5);
+        }
+        
+        .scroll-top {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #3d5a80, #98c1d9);
+            color: #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.5s;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            z-index: 999;
+        }
+        
+        .scroll-top.active {
+            opacity: 1;
+            visibility: visible;
+            animation: bounce 2s infinite;
+        }
+        
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0);
+            }
+            40% {
+                transform: translateY(-10px);
+            }
+            60% {
+                transform: translateY(-5px);
+            }
+        }
+        
+        .scroll-top:hover {
+            transform: scale(1.1);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        /* רספונסיביות */
+        @media (max-width: 1200px) {
+            .main-container {
+                max-width: 960px;
+            }
+            
+            .three-d-title {
+                font-size: 3.5rem;
+            }
+            
+            .features-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (max-width: 992px) {
+            .main-container {
+                max-width: 720px;
+            }
+            
+            .three-d-title {
+                font-size: 3rem;
+            }
+            
+            .hero-section p {
+                font-size: 1.1rem;
+            }
+            
+            .scene {
+                width: 350px;
+                height: 350px;
+            }
+            
+            .cube__face {
+                width: 350px;
+                height: 350px;
+            }
+            
+            .cube {
+                transform: translateZ(-175px);
+            }
+            
+            .cube__face--front  { transform: rotateY(  0deg) translateZ(175px); }
+            .cube__face--right  { transform: rotateY( 90deg) translateZ(175px); }
+            .cube__face--back   { transform: rotateY(180deg) translateZ(175px); }
+            .cube__face--left   { transform: rotateY(-90deg) translateZ(175px); }
+            .cube__face--top    { transform: rotateX( 90deg) translateZ(175px); }
+            .cube__face--bottom { transform: rotateX(-90deg) translateZ(175px); }
+            
+            .section-title {
+                font-size: 2.5rem;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .main-container {
+                max-width: 540px;
+            }
+            
+            header nav ul {
+                display: none !important;
+            }
+            
+            .mobile-menu-btn {
+                display: flex !important;
+            }
+            
+            .three-d-title {
+                font-size: 2.5rem;
+            }
+            
+            .hero-section p {
+                font-size: 1rem;
+            }
+            
+            .scene {
+                width: 300px;
+                height: 300px;
+            }
+            
+            .cube__face {
+                width: 300px;
+                height: 300px;
+            }
+            
+            .cube {
+                transform: translateZ(-150px);
+            }
+            
+            .cube__face--front  { transform: rotateY(  0deg) translateZ(150px); }
+            .cube__face--right  { transform: rotateY( 90deg) translateZ(150px); }
+            .cube__face--back   { transform: rotateY(180deg) translateZ(150px); }
+            .cube__face--left   { transform: rotateY(-90deg) translateZ(150px); }
+            .cube__face--top    { transform: rotateX( 90deg) translateZ(150px); }
+            .cube__face--bottom { transform: rotateX(-90deg) translateZ(150px); }
+            
+            .section-title {
+                font-size: 2rem;
+            }
+            
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .main-container {
+                padding: 0 15px;
+            }
+            
+            .three-d-title {
+                font-size: 2rem;
+            }
+            
+            .hero-section p {
+                font-size: 0.9rem;
+            }
+            
+            .scene {
+                width: 250px;
+                height: 250px;
+            }
+            
+            .cube__face {
+                width: 250px;
+                height: 250px;
+            }
+            
+            .cube {
+                transform: translateZ(-125px);
+            }
+            
+            .cube__face--front  { transform: rotateY(  0deg) translateZ(125px); }
+            .cube__face--right  { transform: rotateY( 90deg) translateZ(125px); }
+            .cube__face--back   { transform: rotateY(180deg) translateZ(125px); }
+            .cube__face--left   { transform: rotateY(-90deg) translateZ(125px); }
+            .cube__face--top    { transform: rotateX( 90deg) translateZ(125px); }
+            .cube__face--bottom { transform: rotateX(-90deg) translateZ(125px); }
+            
+            .section-title {
+                font-size: 1.8rem;
+            }
+            
+            .cube__face-title {
+                font-size: 1.1rem;
+                padding: 6px;
+            }
+        }
+        
+        /* שיפור חוויית המשתמש במובייל */
+        @media (hover: none) {
+            .neon-button:hover {
+                transform: none;
+                box-shadow: none;
+            }
+            
+            .preview-btn:hover {
+                transform: none;
+            }
+            
+            .animated-icon:hover {
+                transform: none;
+            }
+            
+            /* הגדלת אזורי לחיצה במובייל */
+            .mobile-menu ul li a {
+                padding: 15px;
+            }
+            
+            .close-menu, .mobile-menu-btn {
+                width: 44px;
+                height: 44px;
+            }
+        }
+        
+        /* מניעת גלילה אופקית */
+        html, body {
+            max-width: 100%;
+            overflow-x: hidden;
+        }
+        
+        /* שיפורים נוספים למובייל */
+        @media (max-width: 768px) {
+            .hero-section {
+                padding: 20px 15px;
+                margin-top: 20px;
+            }
+            
+            .three-d-title {
+                font-size: 2.2rem !important;
+                margin-bottom: 15px !important;
+                line-height: 1.2;
+            }
+            
+            .hero-section p {
+                font-size: 0.95rem !important;
+                margin-bottom: 25px !important;
+            }
+            
+            .close-menu {
+                background-color: rgba(152, 193, 217, 0.3);
+                width: 50px;
+                height: 50px;
+                font-size: 1.8rem;
+                top: 15px;
+                left: 15px;
+                z-index: 1001;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            }
+            
+            .mobile-menu {
+                padding-top: 80px;
+            }
+            
+            .section-title {
+                margin-top: 30px;
+            }
+            
+            .main-container {
+                padding-top: 15px;
+            }
+            
+            /* שיפור מרווחים */
+            .scene {
+                margin: 25px auto !important;
+            }
+            
+            .feature-card {
+                margin-bottom: 15px;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .three-d-title {
+                font-size: 1.8rem !important;
+            }
+            
+            .hero-section p {
+                font-size: 0.9rem !important;
+                line-height: 1.5;
+            }
+            
+            .scene {
+                margin: 20px auto !important;
+            }
+            
+            .section-title {
+                font-size: 1.6rem !important;
+                margin-bottom: 20px !important;
+            }
+        }
+        
+        /* תפריט מובייל */
+        .mobile-menu {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 80%;
+            max-width: 300px;
+            height: 100%;
+            background-color: rgba(22, 33, 62, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            transition: right 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: -5px 0 15px rgba(0, 0, 0, 0.3);
+            overflow-y: auto;
+            padding-top: 60px;
+        }
+        
+        .mobile-menu.active {
+            right: 0;
+            animation: slideIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+        
+        @keyframes slideIn {
+            from { right: -100%; opacity: 0; }
+            to { right: 0; opacity: 1; }
+        }
+        
+        .mobile-menu ul {
+            padding: 20px;
+            list-style-type: none;
+            margin: 0;
+        }
+        
+        .mobile-menu ul li {
+            margin-bottom: 15px;
+            opacity: 0;
+            transform: translateX(20px);
+            animation: fadeInItems 0.5s forwards;
+            animation-delay: calc(0.1s * var(--item-index, 0));
+        }
+        
+        @keyframes fadeInItems {
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        .mobile-menu ul li a {
+            display: block;
+            padding: 12px 15px;
+            color: #fff;
+            font-size: 1.2rem;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: all 0.3s;
+            background-color: rgba(152, 193, 217, 0.1);
+        }
+        
+        .mobile-menu ul li a:hover {
+            background-color: rgba(152, 193, 217, 0.2);
+            transform: translateX(-5px);
+            color: #98c1d9;
+        }
+        
+        .close-menu {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            font-size: 1.5rem;
+            color: #fff;
+            cursor: pointer;
+            transition: all 0.3s;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background-color: rgba(152, 193, 217, 0.1);
+        }
+        
+        .close-menu:hover {
+            color: #98c1d9;
+            transform: rotate(90deg);
+            background-color: rgba(152, 193, 217, 0.2);
+        }
+        
+        .mobile-menu-btn {
+            font-size: 1.5rem;
+            cursor: pointer;
+            display: none;
+            width: 40px;
+            height: 40px;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background-color: rgba(152, 193, 217, 0.1);
+            transition: all 0.3s;
+        }
+        
+        .mobile-menu-btn:hover {
+            background-color: rgba(152, 193, 217, 0.2);
+            transform: scale(1.1);
+        }
+        
+        @media (max-width: 768px) {
+            .mobile-menu-btn {
+                display: flex !important;
+            }
+            
+            header nav {
+                padding: 0.8rem 1.5rem !important;
+            }
+        }
+        
+        /* שיפור כפתורים */
+        .neon-button {
+            display: inline-block;
+            padding: 12px 25px;
+            font-size: 1rem;
+            font-weight: 600;
+            color: #fff;
+            background: linear-gradient(45deg, #3d5a80, #98c1d9);
+            border: none;
+            border-radius: 30px;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+        
+        .neon-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+            background: linear-gradient(45deg, #98c1d9, #3d5a80);
+        }
+        
+        /* שיפורים נוספים למובייל */
+        @media (max-width: 768px) {
+            .hero-section {
+                padding: 20px 15px;
+                margin-top: 20px;
+            }
+            
+            .three-d-title {
+                font-size: 2.2rem !important;
+                margin-bottom: 15px !important;
+                line-height: 1.2;
+            }
+            
+            .hero-section p {
+                font-size: 0.95rem !important;
+                margin-bottom: 25px !important;
+            }
+            
+            .close-menu {
+                background-color: rgba(152, 193, 217, 0.3);
+                width: 50px;
+                height: 50px;
+                font-size: 1.8rem;
+                top: 15px;
+                left: 15px;
+                z-index: 1001;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            }
+            
+            .mobile-menu {
+                padding-top: 80px;
+            }
+            
+            .section-title {
+                margin-top: 30px;
+            }
+            
+            .main-container {
+                padding-top: 15px;
+            }
+            
+            /* שיפור מרווחים */
+            .scene {
+                margin: 25px auto !important;
+            }
+            
+            .feature-card {
+                margin-bottom: 15px;
+            }
+            
+            /* שיפור לוגו ותפריט */
+            .logo {
+                font-size: 1.6rem !important;
+                font-weight: 600;
+                background: linear-gradient(45deg, #98c1d9, #e0fbfc);
+                -webkit-background-clip: text;
+                background-clip: text;
+                -webkit-text-fill-color: transparent;
+                text-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            }
+            
+            header nav {
+                padding: 0.8rem 1rem !important;
+            }
+            
+            .mobile-menu-btn {
+                background-color: rgba(152, 193, 217, 0.3);
+                border-radius: 8px;
+                width: 40px;
+                height: 40px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 1.8rem;
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+            }
+            
+            /* שיפור כפתורים במובייל */
+            .neon-button {
+                padding: 12px 20px;
+                width: 85%;
+                max-width: 250px;
+                margin: 8px auto;
+                font-size: 0.95rem;
+                display: block;
+            }
+            
+            /* שיפור הצגת טקסט */
+            p {
+                line-height: 1.6;
+            }
+        }
+        
+        /* אנימציות רקע */
+        @keyframes shineEffect {
+            0% {
+                left: -50%;
+                top: -50%;
+            }
+            100% {
+                left: 150%;
+                top: 150%;
+            }
+        }
+        
+        /* אנימציות לאייקונים */
+        .icon-animate {
+            transition: all 0.3s;
+            position: relative;
+        }
+        
+        .icon-animate:hover {
+            transform: scale(1.2);
+            filter: drop-shadow(0 0 8px rgba(152, 193, 217, 0.8));
+        }
+        
+        .icon-animate:after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            background: radial-gradient(circle, rgba(152, 193, 217, 0.4) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.3s;
+            border-radius: 50%;
+            z-index: -1;
+        }
+        
+        .icon-animate:hover:after {
+            opacity: 1;
+            animation: pulse 1.5s infinite;
+        }
+        
+        @keyframes pulse {
+            0% {
+                transform: scale(0.95);
+                opacity: 0.7;
+            }
+            50% {
+                transform: scale(1.05);
+                opacity: 0.4;
+            }
+            100% {
+                transform: scale(0.95);
+                opacity: 0.7;
+            }
+        }
+        
+        /* אנימציית גלילה */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease;
+        }
+        
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* אפקט זוהר לכפתורים */
+        .glow-effect {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .glow-effect:before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(152, 193, 217, 0.3) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.5s;
+            z-index: -1;
+            transform: scale(0.5);
+        }
+        
+        .glow-effect:hover:before {
+            opacity: 1;
+            transform: scale(1);
+            animation: glowPulse 2s infinite;
+        }
+        
+        @keyframes glowPulse {
+            0%, 100% {
+                transform: scale(0.8);
+            }
+            50% {
+                transform: scale(1.1);
+            }
+        }
+        
+        /* עיצוב תגיות מאפיינים */
+        .feature-badges {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+            justify-content: center;
+        }
+        
+        .feature-badge {
+            background: rgba(152, 193, 217, 0.2);
+            color: #e0fbfc;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s;
+        }
+        
+        .feature-badge:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+            background: rgba(152, 193, 217, 0.3);
+        }
+        
+        .feature-badge i {
+            color: #98c1d9;
+        }
+        
+        /* עיצוב מודאל */
+        .site-preview {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .preview-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .site-title {
+            font-size: 1.8rem;
+            margin: 0;
+            color: #e0fbfc;
+        }
+        
+        .device-switcher {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .device-btn {
+            background: rgba(152, 193, 217, 0.1);
+            color: #e0fbfc;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .device-btn.active {
+            background: rgba(152, 193, 217, 0.4);
+            box-shadow: 0 0 10px rgba(152, 193, 217, 0.3);
+        }
+        
+        .preview-frame-container {
+            width: 100%;
+            height: 400px;
+            overflow: hidden;
+            border-radius: 10px;
+            transition: all 0.5s;
+        }
+        
+        .preview-frame-container.desktop {
+            width: 100%;
+        }
+        
+        .preview-frame-container.tablet {
+            width: 768px;
+            margin: 0 auto;
+        }
+        
+        .preview-frame-container.mobile {
+            width: 375px;
+            margin: 0 auto;
+        }
+        
+        .preview-frame {
+            width: 100%;
+            height: 100%;
+            background: #fff;
+        }
+        
+        .site-features {
+            padding: 20px;
+            background: rgba(22, 33, 62, 0.5);
+            border-radius: 10px;
+            text-align: center;
+        }
+        
+        .site-description {
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+        
+        .site-price {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #98c1d9;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="glass-effect" style="
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+            background-color: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            border-radius: 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        ">
+            <div class="logo" style="font-size: 2rem; letter-spacing: 1px;">סטודיו דיגיטל</div>
+            <ul style="display: flex; gap: 20px; margin: 0; padding: 0;">
+                <li><a href="#">דף הבית</a></li>
+                <li><a href="#">אתרים מוכנים</a></li>
+                <li><a href="#">שירותים</a></li>
+                <li><a href="#">תיק עבודות</a></li>
+                <li><a href="#">צור קשר</a></li>
+            </ul>
+            <div class="mobile-menu-btn">☰</div>
+        </nav>
+    </header>
+
+    <!-- תפריט מובייל -->
+    <div class="mobile-menu">
+        <div class="close-menu">✕</div>
+        <ul>
+            <li style="--item-index: 0"><a href="#">דף הבית</a></li>
+            <li style="--item-index: 1"><a href="#">אתרים מוכנים</a></li>
+            <li style="--item-index: 2"><a href="#">שירותים</a></li>
+            <li style="--item-index: 3"><a href="#">תיק עבודות</a></li>
+            <li style="--item-index: 4"><a href="#">צור קשר</a></li>
+        </ul>
+    </div>
+
+    <div class="main-container">
+        <section class="hero-section">
+            <h1 class="three-d-title gradient-text" data-text="אתרים מוכנים בתלת-ממד" style="font-size: 4.5rem; margin-bottom: 30px;">אתרים מוכנים בתלת-ממד</h1>
+            <p style="font-size: 1.3rem; max-width: 700px; margin: 0 auto 40px; color: #e0fbfc;">גלו את מגוון האתרים המוכנים שלנו בחוויה תלת-ממדית ייחודית. לחצו על כל פאה של הקוביה כדי לצפות בתצוגה מקדימה מלאה של האתר.</p>
+            
+            <!-- כפתורים תלת-ממדיים -->
+            <div class="hero-buttons" style="
+                display: flex;
+                justify-content: center;
+                gap: 20px;
+                margin-top: 30px;
+            ">
+                <button class="three-d-button primary neon-button" style="
+                    padding: 15px 30px;
+                    font-size: 1.1rem;
+                    background: linear-gradient(135deg, #3d5a80, #2c3e50);
+                    color: white;
+                    border: none;
+                    border-radius: 8px;
+                    cursor: pointer;
+                    position: relative;
+                    transform-style: preserve-3d;
+                    transition: transform 0.3s, box-shadow 0.3s;
+                ">
+                    <span style="display: block; transform: translateZ(0);">גלה עוד</span>
+                    <span style="
+                        position: absolute;
+                        width: 100%;
+                        height: 20px;
+                        background: #2c3e50;
+                        left: 0;
+                        bottom: -20px;
+                        transform-origin: top;
+                        transform: rotateX(-90deg);
+                    "></span>
+                    <span style="
+                        position: absolute;
+                        width: 20px;
+                        height: 100%;
+                        background: #2c3e50;
+                        top: 0;
+                        right: -20px;
+                        transform-origin: left;
+                        transform: rotateY(90deg);
+                    "></span>
+                </button>
+                
+                <button class="three-d-button secondary neon-button" style="
+                    padding: 15px 30px;
+                    font-size: 1.1rem;
+                    background: transparent;
+                    color: #98c1d9;
+                    border: 2px solid #98c1d9;
+                    border-radius: 8px;
+                    cursor: pointer;
+                    position: relative;
+                    transform-style: preserve-3d;
+                    transition: transform 0.3s, box-shadow 0.3s;
+                ">
+                    <span style="display: block; transform: translateZ(0);">צור קשר</span>
+                    <span style="
+                        position: absolute;
+                        width: 100%;
+                        height: 20px;
+                        background: rgba(152, 193, 217, 0.3);
+                        left: 0;
+                        bottom: -20px;
+                        transform-origin: top;
+                        transform: rotateX(-90deg);
+                    "></span>
+                    <span style="
+                        position: absolute;
+                        width: 20px;
+                        height: 100%;
+                        background: rgba(152, 193, 217, 0.3);
+                        top: 0;
+                        right: -20px;
+                        transform-origin: left;
+                        transform: rotateY(90deg);
+                    "></span>
+                </button>
+            </div>
+        </section>
+
+        <div class="scene" style="width: 450px; height: 450px; margin: 50px auto;">
+            <!-- סרגל כלים לשליטה בקוביה -->
+            <div class="cube-controls">
+                <button class="rotate-left" title="סובב שמאלה"><i class="fas fa-arrow-left"></i> סובב שמאלה</button>
+                <button class="rotate-right" title="סובב ימינה"><i class="fas fa-arrow-right"></i> סובב ימינה</button>
+                <button class="rotate-up" title="סובב למעלה"><i class="fas fa-arrow-up"></i> סובב למעלה</button>
+                <button class="rotate-down" title="סובב למטה"><i class="fas fa-arrow-down"></i> סובב למטה</button>
+                <button class="auto-rotate" title="סיבוב אוטומטי"><i class="fas fa-sync-alt"></i> סיבוב אוטומטי</button>
+                <button class="reset-rotation" title="איפוס"><i class="fas fa-undo"></i> איפוס</button>
+            </div>
+            
+            <div class="cube" style="width: 100%; height: 100%;">
+                <div class="cube__face cube__face--front" data-site="business">
+                    <img src="https://via.placeholder.com/400x400/0f3460/ffffff?text=תיווך+נדלן" alt="אתר תיווך נדל״ן">
+                    <div class="cube__face-title">אתר תיווך נדל״ן</div>
+                </div>
+                <div class="cube__face cube__face--back" data-site="portfolio">
+                    <img src="https://via.placeholder.com/400x400/16213e/ffffff?text=אתר+כושר" alt="אתר כושר">
+                    <div class="cube__face-title">אתר כושר</div>
+                </div>
+                <div class="cube__face cube__face--right" data-site="ecommerce">
+                    <img src="https://via.placeholder.com/400x400/1a1a2e/ffffff?text=אתר+קוסמטיקה" alt="אתר קוסמטיקה">
+                    <div class="cube__face-title">אתר קוסמטיקה</div>
+                </div>
+                <div class="cube__face cube__face--left" data-site="blog">
+                    <img src="https://via.placeholder.com/400x400/0f3460/ffffff?text=דף+נחיתה" alt="דף נחיתה">
+                    <div class="cube__face-title">דף נחיתה</div>
+                </div>
+                <div class="cube__face cube__face--top" data-site="landing">
+                    <img src="https://via.placeholder.com/400x400/16213e/ffffff?text=אתר+מובייל" alt="אתר מובייל">
+                    <div class="cube__face-title">אתר מובייל</div>
+                </div>
+                <div class="cube__face cube__face--bottom" data-site="restaurant">
+                    <img src="https://via.placeholder.com/400x400/1a1a2e/ffffff?text=אתר+ציפורניים" alt="אתר ציפורניים">
+                    <div class="cube__face-title">אתר ציפורניים</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- מודאל לתצוגה מקדימה של האתר -->
+        <div id="siteModal" class="modal">
+            <div class="modal-content">
+                <span class="close-modal">&times;</span>
+                <div class="site-preview">
+                    <div class="preview-header">
+                        <h3 class="site-title"></h3>
+                        <div class="device-switcher">
+                            <button class="device-btn active" data-device="desktop"><i class="fas fa-desktop"></i> מחשב</button>
+                            <button class="device-btn" data-device="tablet"><i class="fas fa-tablet-alt"></i> טאבלט</button>
+                            <button class="device-btn" data-device="mobile"><i class="fas fa-mobile-alt"></i> מובייל</button>
+                        </div>
+                    </div>
+                    <div class="preview-frame-container desktop">
+                        <iframe class="preview-frame" frameborder="0"></iframe>
+                    </div>
+                    <div class="site-features">
+                        <div class="feature-badges">
+                            <span class="feature-badge"><i class="fas fa-tachometer-alt"></i> <span class="loading-speed">מהירה</span></span>
+                            <span class="feature-badge"><i class="fas fa-mobile-alt"></i> <span class="responsiveness">רספונסיביות מלאה</span></span>
+                            <span class="feature-badge"><i class="fas fa-tag"></i> <span class="domain-name">שם מובנה</span></span>
+                            <span class="feature-badge"><i class="fas fa-paint-brush"></i> <span class="design-quality">עיצוב מודרני</span></span>
+                        </div>
+                        <div class="site-description"></div>
+                        <div class="site-price"></div>
+                        <button class="preview-btn buy-now-btn">קנה עכשיו</button>
+                        <button class="preview-btn customize-btn">התאם אישית</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- כפתור גלילה למעלה -->
+        <div class="scroll-top">↑</div>
+
+        <script>
+            // נתוני האתרים
+            const sitesData = {
+                business: {
+                    title: "אתר תיווך נדל״ן",
+                    description: "אתר מודרני לסוכנות תיווך נדל״ן עם ממשק חיפוש מתקדם, תצוגת נכסים אטרקטיבית ומערכת ניהול תוכן ידידותית.",
+                    price: "₪2,500",
+                    previewUrl: "https://vipoconnect.github.io/Real-estate-brokerage/",
+                    features: {
+                        loadingSpeed: "מהיר",
+                        responsiveness: "מותאם לכל המכשירים",
+                        domainName: "כלול לשנה",
+                        design: "פרימיום"
+                    }
+                },
+                portfolio: {
+                    title: "אתר כושר",
+                    description: "אתר מקצועי למאמני כושר ואורח חיים בריא, כולל תצוגת שירותים, לוח זמנים, ומערכת הזמנת שיעורים.",
+                    price: "₪1,800",
+                    previewUrl: "https://vipoconnect.github.io/fitnes/",
+                    features: {
+                        loadingSpeed: "מהיר מאוד",
+                        responsiveness: "מותאם לכל המכשירים",
+                        domainName: "כלול לשנה",
+                        design: "מודרני"
+                    }
+                },
+                ecommerce: {
+                    title: "אתר קוסמטיקה",
+                    description: "חנות אינטרנט מלאה למוצרי קוסמטיקה וטיפוח, כולל סל קניות, מערכת תשלומים מאובטחת וניהול מלאי.",
+                    price: "₪3,500",
+                    previewUrl: "https://vipoconnect.github.io/face/",
+                    features: {
+                        loadingSpeed: "מהיר",
+                        responsiveness: "מותאם לכל המכשירים",
+                        domainName: "כלול לשנה",
+                        design: "יוקרתי"
+                    }
+                },
+                blog: {
+                    title: "דף נחיתה",
+                    description: "דף נחיתה אפקטיבי לקמפיינים שיווקיים, מותאם לקידום מוצרים, שירותים או אירועים עם טפסי לידים מובנים.",
+                    price: "₪1,200",
+                    previewUrl: "https://lp.landing-page.mobi/index.php?page=landing&id=607833&token=35405e758b173c50c90bc0b49cb6363d&CustomerId=33877&ProjectId=1059482&Domain=lp6.me&Key=ijY1T",
+                    features: {
+                        loadingSpeed: "מהיר במיוחד",
+                        responsiveness: "מותאם לכל המכשירים",
+                        domainName: "כלול לשנה",
+                        design: "ממיר"
+                    }
+                },
+                landing: {
+                    title: "אתר מובייל",
+                    description: "אתר מותאם במיוחד למובייל עם חווית משתמש מעולה, טעינה מהירה וממשק אינטואיטיבי.",
+                    price: "₪1,500",
+                    previewUrl: "https://example.com/mobile",
+                    features: {
+                        loadingSpeed: "מהיר במיוחד",
+                        responsiveness: "מותאם למובייל",
+                        domainName: "כלול לשנה",
+                        design: "חדשני"
+                    }
+                },
+                restaurant: {
+                    title: "אתר ציפורניים",
+                    description: "אתר מקצועי לסטודיו לציפורניים, כולל גלריית עבודות, מערכת הזמנת תורים ותצוגת שירותים ומחירים.",
+                    price: "₪2,000",
+                    previewUrl: "https://example.com/nails",
+                    features: {
+                        loadingSpeed: "מהיר",
+                        responsiveness: "מותאם לכל המכשירים",
+                        domainName: "כלול לשנה",
+                        design: "אלגנטי"
+                    }
+                }
+            };
+            
+            // פונקציה לפתיחת המודאל
+            function openModal(siteType) {
+                const modal = document.getElementById('siteModal');
+                const data = sitesData[siteType];
+                
+                document.querySelector('.site-title').textContent = data.title;
+                document.querySelector('.site-description').textContent = data.description;
+                document.querySelector('.site-price').textContent = `מחיר: ${data.price}`;
+                document.querySelector('.preview-frame').src = data.previewUrl;
+                
+                // עדכון התגיות של מאפייני האתר
+                document.querySelector('.loading-speed').textContent = data.features.loadingSpeed;
+                document.querySelector('.responsiveness').textContent = data.features.responsiveness;
+                document.querySelector('.domain-name').textContent = data.features.domainName;
+                document.querySelector('.design-quality').textContent = data.features.design;
+                
+                modal.classList.add('active');
+                document.body.style.overflow = 'hidden'; // מונע גלילה ברקע
+                
+                // איפוס תצוגת המכשיר לברירת מחדל
+                document.querySelectorAll('.device-btn').forEach(btn => btn.classList.remove('active'));
+                document.querySelector('.device-btn[data-device="desktop"]').classList.add('active');
+                document.querySelector('.preview-frame-container').className = 'preview-frame-container desktop';
+            }
+            
+            // פונקציונליות לסיבוב הקוביה
+            let cube, rotateLeftBtn, rotateRightBtn, rotateUpBtn, rotateDownBtn, autoRotateBtn, resetRotationBtn;
+            let rotationX = 0;
+            let rotationY = 0;
+            let autoRotate = false;
+            let autoRotateInterval;
+            
+            // פונקציה לעדכון הסיבוב של הקוביה
+            function updateCubeRotation() {
+                if (cube) {
+                    cube.style.transform = `translateZ(-200px) rotateX(${rotationX}deg) rotateY(${rotationY}deg)`;
+                }
+            }
+            
+            // הוספת אירועי לחיצה כשהדף נטען
+            document.addEventListener('DOMContentLoaded', function() {
+                // הגדרת אלמנטי הקוביה וכפתורי השליטה
+                cube = document.querySelector('.cube');
+                rotateLeftBtn = document.querySelector('.rotate-left');
+                rotateRightBtn = document.querySelector('.rotate-right');
+                rotateUpBtn = document.querySelector('.rotate-up');
+                rotateDownBtn = document.querySelector('.rotate-down');
+                autoRotateBtn = document.querySelector('.auto-rotate');
+                resetRotationBtn = document.querySelector('.reset-rotation');
+                
+                if (!cube || !rotateLeftBtn) {
+                    console.error('לא ניתן למצוא את אלמנטי הקוביה או כפתורי השליטה');
+                    return;
+                }
+                
+                // כפתורי סיבוב
+                rotateLeftBtn.addEventListener('click', function() {
+                    console.log('סיבוב שמאלה');
+                    rotationY -= 90;
+                    updateCubeRotation();
+                });
+                
+                rotateRightBtn.addEventListener('click', function() {
+                    console.log('סיבוב ימינה');
+                    rotationY += 90;
+                    updateCubeRotation();
+                });
+                
+                rotateUpBtn.addEventListener('click', function() {
+                    console.log('סיבוב למעלה');
+                    rotationX -= 90;
+                    updateCubeRotation();
+                });
+                
+                rotateDownBtn.addEventListener('click', function() {
+                    console.log('סיבוב למטה');
+                    rotationX += 90;
+                    updateCubeRotation();
+                });
+                
+                // סיבוב אוטומטי
+                autoRotateBtn.addEventListener('click', function() {
+                    console.log('סיבוב אוטומטי');
+                    autoRotate = !autoRotate;
+                    this.classList.toggle('active');
+                    
+                    if (autoRotate) {
+                        autoRotateInterval = setInterval(function() {
+                            rotationY += 1;
+                            updateCubeRotation();
+                        }, 50);
+                    } else {
+                        clearInterval(autoRotateInterval);
+                    }
+                });
+                
+                // איפוס הסיבוב
+                resetRotationBtn.addEventListener('click', function() {
+                    console.log('איפוס סיבוב');
+                    rotationX = 0;
+                    rotationY = 0;
+                    updateCubeRotation();
+                });
+                
+                // הוספת Font Awesome לאייקונים אם עדיין לא קיים
+                if (!document.querySelector('link[href*="font-awesome"]')) {
+                    const fontAwesome = document.createElement('link');
+                    fontAwesome.rel = 'stylesheet';
+                    fontAwesome.href = 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css';
+                    document.head.appendChild(fontAwesome);
+                }
+                
+                // הוספת אירועי לחיצה על פאות הקוביה
+                document.querySelectorAll('.cube__face').forEach(face => {
+                    face.addEventListener('click', function() {
+                        const siteType = this.getAttribute('data-site');
+                        openModal(siteType);
+                    });
+                });
+                
+                // הוספת אירוע לחיצה על כפתור סגירת המודאל
+                document.querySelector('.close-modal').addEventListener('click', function() {
+                    document.getElementById('siteModal').classList.remove('active');
+                });
+                
+                // אירועי לחיצה על כפתורי תצוגת מכשיר
+                document.querySelectorAll('.device-view-btn').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const view = this.getAttribute('data-view');
+                        document.querySelectorAll('.device-view-btn').forEach(b => b.classList.remove('active'));
+                        this.classList.add('active');
+                        
+                        const previewFrame = document.querySelector('.preview-frame');
+                        previewFrame.className = 'preview-frame';
+                        previewFrame.classList.add(view);
+                    });
+                });
+                
+                console.log('הוגדרו אירועי לחיצה לכפתורי הסיבוב');
+            });
+            
+            // פתיחת המודאל של תצוגה מקדימה
+            document.querySelectorAll('.cube__face').forEach(face => {
+                face.addEventListener('click', function() {
+                    const siteType = this.getAttribute('data-site');
+                    openModal(siteType);
+                });
+            });
+            
+            // סגירת המודאל
+            document.querySelector('.close-modal').addEventListener('click', function() {
+                document.getElementById('siteModal').style.display = 'none';
+                document.body.style.overflow = ''; // מחזיר את הגלילה
+            });
+            
+            // מעבר בין תצוגות מכשירים
+            document.querySelectorAll('.device-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const device = this.getAttribute('data-device');
+                    
+                    // עדכון כפתור פעיל
+                    document.querySelectorAll('.device-btn').forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // עדכון תצוגת מכשיר
+                    const container = document.querySelector('.preview-frame-container');
+                    container.className = `preview-frame-container ${device}`;
+                });
+            });
+            
+            // הוספת אנימציות לאלמנטים בעת גלילה
+            window.addEventListener('scroll', function() {
+                const reveals = document.querySelectorAll('.reveal');
+                
+                reveals.forEach(element => {
+                    const windowHeight = window.innerHeight;
+                    const elementTop = element.getBoundingClientRect().top;
+                    const elementVisible = 150;
+                    
+                    if (elementTop < windowHeight - elementVisible) {
+                        element.classList.add('active');
+                    } else {
+                        element.classList.remove('active');
+                    }
+                });
+            });
+            
+            // הוספת אנימציות לאלמנטים בטעינת הדף
+            document.querySelectorAll('.features-section > div, .testimonials-section > div, .pricing-section > div').forEach(element => {
+                element.classList.add('reveal');
+            });
+        </script>
