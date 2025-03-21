@@ -1,0 +1,976 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>אתרים מוכנים למכירה - פתרונות דיגיטליים</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <style>
+    body, html {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      font-family: 'Heebo', sans-serif;
+      overflow-x: hidden;
+      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+      color: #ffffff;
+    }
+
+    video#bgVideo {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: -1;
+      opacity: 0.7;
+    }
+
+    .header {
+      padding: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: relative;
+      z-index: 10;
+    }
+
+    .logo {
+      font-size: 28px;
+      font-weight: 700;
+      color: #ffffff;
+      text-shadow: 0 0 10px rgba(255,255,255,0.5);
+    }
+
+    .nav-menu {
+      display: flex;
+      gap: 20px;
+    }
+
+    .nav-item {
+      cursor: pointer;
+      padding: 8px 15px;
+      border-radius: 20px;
+      background-color: rgba(255,255,255,0.1);
+      transition: all 0.3s ease;
+    }
+
+    .nav-item:hover {
+      background-color: rgba(255,255,255,0.2);
+      transform: translateY(-3px);
+    }
+
+    .container {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+
+    .hero-section {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    h1 {
+      color: #ffffff;
+      text-shadow: 2px 2px 8px rgba(0,0,0,0.6);
+      margin-bottom: 20px;
+      font-size: 2.5rem;
+      animation: fadeInDown 1s ease-out;
+    }
+
+    .subtitle {
+      font-size: 1.2rem;
+      opacity: 0.9;
+      max-width: 600px;
+      margin: 0 auto 30px;
+      line-height: 1.6;
+    }
+
+    @keyframes fadeInDown {
+      from { opacity: 0; transform: translateY(-30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .cube-container {
+      perspective: 1000px;
+      margin-bottom: 50px;
+    }
+
+    .cube {
+      width: 220px;
+      height: 220px;
+      position: relative;
+      transform-style: preserve-3d;
+      animation: rotateCube 20s infinite linear;
+      margin: 0 auto;
+    }
+
+    .cube:hover {
+      animation-play-state: paused;
+    }
+
+    @keyframes rotateCube {
+      from { transform: rotateX(0) rotateY(0); }
+      to { transform: rotateX(360deg) rotateY(360deg); }
+    }
+
+    .face {
+      position: absolute;
+      width: 220px;
+      height: 220px;
+      background-size: cover;
+      background-position: center;
+      border-radius: 20px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.5);
+      backdrop-filter: blur(10px);
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 15px;
+      box-sizing: border-box;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+    }
+
+    .face:hover {
+      box-shadow: 0 0 30px rgba(255,255,255,0.6);
+    }
+
+    .face-title {
+      font-weight: 700;
+      font-size: 18px;
+      margin: 0;
+      text-shadow: 0 0 10px rgba(0,0,0,0.8);
+    }
+
+    .face-price {
+      font-weight: 500;
+      font-size: 16px;
+      color: #ffcc00;
+      margin: 5px 0 0;
+      text-shadow: 0 0 10px rgba(0,0,0,0.8);
+    }
+
+    .front  { transform: translateZ(110px); background-image: url('https://raw.githubusercontent.com/VIPOCONNECT/fit/refs/heads/main/1.webp'); }
+    .back   { transform: rotateY(180deg) translateZ(110px); background-image: url('https://raw.githubusercontent.com/VIPOCONNECT/vila/refs/heads/main/1%20(1).webp'); }
+    .right  { transform: rotateY(90deg) translateZ(110px); background-image: url('https://raw.githubusercontent.com/VIPOCONNECT/-12/refs/heads/main/images/2.webp'); }
+    .left   { transform: rotateY(-90deg) translateZ(110px); background-image: url('https://raw.githubusercontent.com/VIPOCONNECT/-12/refs/heads/main/images/1.webp'); }
+    .top    { transform: rotateX(90deg) translateZ(110px); background-image: url('https://raw.githubusercontent.com/VIPOCONNECT/vipo-24/refs/heads/main/images/image1.webp'); }
+    .bottom { transform: rotateX(-90deg) translateZ(110px); background-image: url('https://raw.githubusercontent.com/VIPOCONNECT/vipo-24/refs/heads/main/images/image5.webp'); }
+
+    .content-section {
+      max-width: 1200px;
+      margin: 0 auto;
+      background-color: rgba(255,255,255,0.1);
+      border-radius: 20px;
+      padding: 30px;
+      backdrop-filter: blur(10px);
+      animation: fadeIn 1s ease-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 30px;
+      margin-top: 30px;
+    }
+
+    .product-card {
+      background-color: rgba(255,255,255,0.1);
+      border-radius: 15px;
+      overflow: hidden;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .product-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+    }
+
+    .product-image {
+      height: 180px;
+      background-size: cover;
+      background-position: center;
+    }
+
+    .product-info {
+      padding: 20px;
+    }
+
+    .product-title {
+      font-weight: 700;
+      margin: 0 0 10px;
+    }
+
+    .product-description {
+      font-size: 14px;
+      opacity: 0.9;
+      margin-bottom: 15px;
+    }
+
+    .product-price {
+      font-weight: 700;
+      color: #ffcc00;
+      font-size: 18px;
+      margin-bottom: 15px;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 8px 20px;
+      background: linear-gradient(45deg, #ffcc00, #ff9500);
+      border: none;
+      border-radius: 30px;
+      color: #333;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 5px 15px rgba(255,204,0,0.4);
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,0.8);
+      z-index: 100;
+      overflow-y: auto;
+      padding: 50px 20px;
+      box-sizing: border-box;
+    }
+
+    .modal-content {
+      background: linear-gradient(135deg, #203a43, #2c5364);
+      border-radius: 20px;
+      max-width: 800px;
+      margin: 0 auto;
+      position: relative;
+      overflow: hidden;
+      animation: modalFadeIn 0.5s ease-out;
+    }
+
+    @keyframes modalFadeIn {
+      from { opacity: 0; transform: translateY(-50px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .modal-header {
+      height: 250px;
+      background-size: cover;
+      background-position: center;
+      position: relative;
+    }
+
+    .modal-header-overlay {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 20px;
+      background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+    }
+
+    .modal-title {
+      font-size: 24px;
+      margin: 0;
+    }
+
+    .modal-price {
+      font-size: 20px;
+      color: #ffcc00;
+      margin: 10px 0 0;
+    }
+
+    .modal-body {
+      padding: 30px;
+    }
+
+    .modal-features {
+      margin: 20px 0;
+    }
+
+    .feature-item {
+      display: flex;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .feature-icon {
+      margin-left: 10px;
+      color: #ffcc00;
+    }
+
+    .modal-actions {
+      display: flex;
+      gap: 15px;
+      margin-top: 30px;
+    }
+
+    .close-modal {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      background-color: rgba(0,0,0,0.5);
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 10;
+      transition: background-color 0.3s ease;
+    }
+
+    .close-modal:hover {
+      background-color: rgba(0,0,0,0.8);
+    }
+
+    footer {
+      background-color: rgba(0,0,0,0.3);
+      padding: 30px 20px;
+      text-align: center;
+      margin-top: 50px;
+    }
+
+    .footer-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 30px;
+    }
+
+    .footer-section {
+      flex: 1;
+      min-width: 200px;
+    }
+
+    .footer-title {
+      font-weight: 700;
+      margin-bottom: 15px;
+      font-size: 18px;
+    }
+
+    .footer-links {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .footer-link {
+      opacity: 0.8;
+      transition: opacity 0.3s ease;
+    }
+
+    .footer-link:hover {
+      opacity: 1;
+    }
+
+    .copyright {
+      margin-top: 30px;
+      opacity: 0.7;
+      font-size: 14px;
+    }
+
+    /* Mobile Responsiveness */
+    @media (max-width: 768px) {
+      .header {
+        flex-direction: column;
+        gap: 15px;
+      }
+      
+      .nav-menu {
+        width: 100%;
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+      
+      h1 {
+        font-size: 1.8rem;
+      }
+      
+      .subtitle {
+        font-size: 1rem;
+      }
+      
+      .cube {
+        width: 180px;
+        height: 180px;
+      }
+      
+      .face {
+        width: 180px;
+        height: 180px;
+      }
+      
+      .front { transform: translateZ(90px); }
+      .back { transform: rotateY(180deg) translateZ(90px); }
+      .right { transform: rotateY(90deg) translateZ(90px); }
+      .left { transform: rotateY(-90deg) translateZ(90px); }
+      .top { transform: rotateX(90deg) translateZ(90px); }
+      .bottom { transform: rotateX(-90deg) translateZ(90px); }
+      
+      .content-section {
+        padding: 20px;
+      }
+      
+      .products-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .footer-content {
+        flex-direction: column;
+        text-align: center;
+      }
+    }
+
+    /* שליטה בקוביה */
+    .cube-controls {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin-top: 20px;
+    }
+
+    .control-btn {
+      width: 40px;
+      height: 40px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: white;
+      transition: all 0.3s ease;
+      backdrop-filter: blur(5px);
+    }
+
+    .control-btn:hover {
+      background: rgba(255,255,255,0.3);
+      transform: scale(1.1);
+    }
+
+    /* גלריית תמונות */
+    .gallery-container {
+      display: flex;
+      overflow-x: auto;
+      gap: 10px;
+      margin: 20px 0;
+      padding: 10px 0;
+    }
+
+    .gallery-item {
+      min-width: 120px;
+      height: 80px;
+      background-size: cover;
+      background-position: center;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .gallery-item:hover {
+      transform: scale(1.05);
+    }
+
+    .gallery-item.active {
+      box-shadow: 0 0 0 3px #ffcc00;
+    }
+
+    /* אפקטים תלת-ממדיים נוספים */
+    .floating-element {
+      position: absolute;
+      width: 60px;
+      height: 60px;
+      background-color: rgba(255,255,255,0.1);
+      border-radius: 50%;
+      backdrop-filter: blur(5px);
+      animation: float 8s infinite ease-in-out;
+      z-index: -1;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translate(0, 0) rotate(0deg); }
+      25% { transform: translate(20px, -20px) rotate(90deg); }
+      50% { transform: translate(0, -40px) rotate(180deg); }
+      75% { transform: translate(-20px, -20px) rotate(270deg); }
+    }
+
+    /* צ'אט תמיכה */
+    .chat-support {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      width: 60px;
+      height: 60px;
+      background: linear-gradient(45deg, #4CAF50, #8BC34A);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 24px;
+      cursor: pointer;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+      transition: all 0.3s ease;
+      z-index: 99;
+    }
+
+    .chat-support:hover {
+      transform: scale(1.1);
+    }
+
+    .chat-window {
+      position: fixed;
+      bottom: 100px;
+      right: 30px;
+      width: 300px;
+      height: 400px;
+      background: linear-gradient(135deg, #203a43, #2c5364);
+      border-radius: 15px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+      overflow: hidden;
+      display: none;
+      z-index: 99;
+      animation: slideUp 0.3s ease-out;
+    }
+
+    @keyframes slideUp {
+      from { transform: translateY(50px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    .chat-header {
+      padding: 15px;
+      background: rgba(0,0,0,0.2);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .chat-body {
+      height: 300px;
+      padding: 15px;
+      overflow-y: auto;
+    }
+
+    .chat-input {
+      display: flex;
+      padding: 10px;
+      background: rgba(0,0,0,0.2);
+    }
+
+    .chat-input input {
+      flex: 1;
+      padding: 8px 15px;
+      border: none;
+      border-radius: 20px;
+      background: rgba(255,255,255,0.1);
+      color: white;
+      outline: none;
+    }
+
+    .chat-input button {
+      background: #ffcc00;
+      border: none;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      margin-right: 10px;
+      cursor: pointer;
+    }
+
+    .message {
+      margin-bottom: 10px;
+      max-width: 80%;
+      padding: 10px 15px;
+      border-radius: 15px;
+      position: relative;
+    }
+
+    .message.user {
+      background: rgba(255,204,0,0.2);
+      align-self: flex-end;
+      margin-right: auto;
+      border-bottom-right-radius: 0;
+    }
+
+    .message.support {
+      background: rgba(255,255,255,0.1);
+      align-self: flex-start;
+      margin-left: auto;
+      border-bottom-left-radius: 0;
+    }
+  </style>
+</head>
+<body>
+  <video id="bgVideo" autoplay loop muted>
+    <source src="https://www.w3schools.com/howto/rain.mp4" type="video/mp4">
+  </video>
+  
+  <header class="header">
+    <div class="logo">WebCube</div>
+    <nav class="nav-menu">
+      <div class="nav-item">דף הבית</div>
+      <div class="nav-item">אתרים למכירה</div>
+      <div class="nav-item">שירותי פיתוח</div>
+      <div class="nav-item">אודות</div>
+      <div class="nav-item">צור קשר</div>
+    </nav>
+  </header>
+  
+  <div class="container">
+    <div class="hero-section">
+      <h1>אתרים מוכנים למכירה</h1>
+      <p class="subtitle">בחר מתוך מגוון אתרים מוכנים ומעוצבים או הזמן אתר מותאם אישית. פתרונות דיגיטליים מקצועיים במחירים אטרקטיביים.</p>
+    </div>
+    
+    <!-- אלמנטים צפים לאפקט תלת-ממדי -->
+    <div class="floating-element" style="top: 20%; left: 10%; animation-delay: 0s;"></div>
+    <div class="floating-element" style="top: 70%; left: 80%; animation-delay: 2s;"></div>
+    <div class="floating-element" style="top: 40%; left: 70%; animation-delay: 4s;"></div>
+    <div class="floating-element" style="top: 80%; left: 30%; animation-delay: 6s;"></div>
+    
+    <div class="cube-container">
+      <div class="cube" id="cube">
+        <div class="face front" onclick="showModal('אתר עסקי', 'אתר מקצועי לעסקים קטנים ובינוניים', 1500, 'https://raw.githubusercontent.com/VIPOCONNECT/fit/refs/heads/main/1.webp')">
+          <h3 class="face-title">אתר עסקי</h3>
+          <p class="face-price">₪1,500</p>
+        </div>
+        <div class="face back" onclick="showModal('אתר נדל״ן', 'אתר מושלם לסוכני נדל״ן ומשרדי תיווך', 2200, 'https://raw.githubusercontent.com/VIPOCONNECT/vila/refs/heads/main/1%20(1).webp')">
+          <h3 class="face-title">אתר נדל״ן</h3>
+          <p class="face-price">₪2,200</p>
+        </div>
+        <div class="face right" onclick="showModal('חנות אונליין', 'חנות מקוונת מלאה עם סליקת אשראי', 3500, 'https://raw.githubusercontent.com/VIPOCONNECT/-12/refs/heads/main/images/2.webp')">
+          <h3 class="face-title">חנות אונליין</h3>
+          <p class="face-price">₪3,500</p>
+        </div>
+        <div class="face left" onclick="showModal('אתר תדמית', 'אתר תדמיתי יוקרתי לחברות וארגונים', 1800, 'https://raw.githubusercontent.com/VIPOCONNECT/-12/refs/heads/main/images/1.webp')">
+          <h3 class="face-title">אתר תדמית</h3>
+          <p class="face-price">₪1,800</p>
+        </div>
+        <div class="face top" onclick="showModal('בלוג מקצועי', 'פלטפורמת תוכן מתקדמת לבלוגרים ויוצרי תוכן', 1200, 'https://raw.githubusercontent.com/VIPOCONNECT/vipo-24/refs/heads/main/images/image1.webp')">
+          <h3 class="face-title">בלוג מקצועי</h3>
+          <p class="face-price">₪1,200</p>
+        </div>
+        <div class="face bottom" onclick="showModal('אתר תיירות', 'אתר לחברות תיירות, מלונות ואטרקציות', 2500, 'https://raw.githubusercontent.com/VIPOCONNECT/vipo-24/refs/heads/main/images/image5.webp')">
+          <h3 class="face-title">אתר תיירות</h3>
+          <p class="face-price">₪2,500</p>
+        </div>
+      </div>
+      
+      <!-- שליטה בקוביה -->
+      <div class="cube-controls">
+        <div class="control-btn" onclick="rotateCube('left')"><i class="fas fa-arrow-left"></i></div>
+        <div class="control-btn" onclick="rotateCube('right')"><i class="fas fa-arrow-right"></i></div>
+        <div class="control-btn" onclick="rotateCube('up')"><i class="fas fa-arrow-up"></i></div>
+        <div class="control-btn" onclick="rotateCube('down')"><i class="fas fa-arrow-down"></i></div>
+        <div class="control-btn" onclick="resetCube()"><i class="fas fa-sync-alt"></i></div>
+      </div>
+    </div>
+    
+    <div class="content-section">
+      <h2>אתרים פופולריים</h2>
+      <div class="products-grid">
+        <div class="product-card">
+          <div class="product-image" style="background-image: url('https://raw.githubusercontent.com/VIPOCONNECT/fit/refs/heads/main/1.webp')"></div>
+          <div class="product-info">
+            <h3 class="product-title">אתר עסקי פרימיום</h3>
+            <p class="product-description">אתר עסקי מקצועי עם עיצוב מודרני, טפסי יצירת קשר, ואינטגרציה עם רשתות חברתיות.</p>
+            <div class="product-price">₪1,800</div>
+            <button class="btn" onclick="showModal('אתר עסקי פרימיום', 'אתר עסקי מקצועי עם עיצוב מודרני', 1800, 'https://raw.githubusercontent.com/VIPOCONNECT/fit/refs/heads/main/1.webp')">פרטים נוספים</button>
+          </div>
+        </div>
+        
+        <div class="product-card">
+          <div class="product-image" style="background-image: url('https://raw.githubusercontent.com/VIPOCONNECT/-12/refs/heads/main/images/2.webp')"></div>
+          <div class="product-info">
+            <h3 class="product-title">חנות אונליין מתקדמת</h3>
+            <p class="product-description">חנות מקוונת מלאה עם ניהול מלאי, סליקת אשראי, ואפשרויות משלוח מתקדמות.</p>
+            <div class="product-price">₪3,900</div>
+            <button class="btn" onclick="showModal('חנות אונליין מתקדמת', 'חנות מקוונת מלאה עם ניהול מלאי', 3900, 'https://raw.githubusercontent.com/VIPOCONNECT/-12/refs/heads/main/images/2.webp')">פרטים נוספים</button>
+          </div>
+        </div>
+        
+        <div class="product-card">
+          <div class="product-image" style="background-image: url('https://raw.githubusercontent.com/VIPOCONNECT/vila/refs/heads/main/1%20(1).webp')"></div>
+          <div class="product-info">
+            <h3 class="product-title">אתר נדל״ן מקצועי</h3>
+            <p class="product-description">אתר מושלם לסוכני נדל״ן עם חיפוש נכסים מתקדם, טפסי התעניינות, וגלריות תמונות.</p>
+            <div class="product-price">₪2,500</div>
+            <button class="btn" onclick="showModal('אתר נדל״ן מקצועי', 'אתר מושלם לסוכני נדל״ן עם חיפוש נכסים מתקדם', 2500, 'https://raw.githubusercontent.com/VIPOCONNECT/vila/refs/heads/main/1%20(1).webp')">פרטים נוספים</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="modal" id="productModal">
+    <div class="modal-content">
+      <div class="close-modal" onclick="closeModal()">✕</div>
+      <div class="modal-header" id="modalImage">
+        <div class="modal-header-overlay">
+          <h2 class="modal-title" id="modalTitle"></h2>
+          <p class="modal-price" id="modalPrice"></p>
+        </div>
+      </div>
+      <div class="modal-body">
+        <p id="modalDescription"></p>
+        
+        <!-- גלריית תמונות -->
+        <div class="gallery-container" id="modalGallery">
+          <!-- תמונות יתווספו דינמית -->
+        </div>
+        
+        <div class="modal-features">
+          <h3>מאפיינים:</h3>
+          <div class="feature-item">
+            <span class="feature-icon"><i class="fas fa-check-circle"></i></span>
+            <span>עיצוב מותאם אישית</span>
+          </div>
+          <div class="feature-item">
+            <span class="feature-icon"><i class="fas fa-check-circle"></i></span>
+            <span>תאימות למובייל</span>
+          </div>
+          <div class="feature-item">
+            <span class="feature-icon"><i class="fas fa-check-circle"></i></span>
+            <span>אחסון לשנה</span>
+          </div>
+          <div class="feature-item">
+            <span class="feature-icon"><i class="fas fa-check-circle"></i></span>
+            <span>תמיכה טכנית</span>
+          </div>
+          <div class="feature-item">
+            <span class="feature-icon"><i class="fas fa-check-circle"></i></span>
+            <span>אופטימיזציה למנועי חיפוש</span>
+          </div>
+        </div>
+        <div class="modal-actions">
+          <button class="btn">רכישה מיידית</button>
+          <button class="btn" style="background: linear-gradient(45deg, #4CAF50, #8BC34A);">צור קשר לפרטים</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- צ'אט תמיכה -->
+  <div class="chat-support" onclick="toggleChat()">
+    <i class="fas fa-comments"></i>
+  </div>
+  
+  <div class="chat-window" id="chatWindow">
+    <div class="chat-header">
+      <div>צוות התמיכה</div>
+      <div style="cursor: pointer;" onclick="toggleChat()">✕</div>
+    </div>
+    <div class="chat-body" id="chatBody">
+      <div class="message support">שלום! כיצד אוכל לעזור לך היום?</div>
+    </div>
+    <div class="chat-input">
+      <input type="text" placeholder="הקלד הודעה..." id="chatInput">
+      <button onclick="sendMessage()"><i class="fas fa-paper-plane"></i></button>
+    </div>
+  </div>
+  
+  <footer>
+    <div class="footer-content">
+      <div class="footer-section">
+        <h3 class="footer-title">WebCube</h3>
+        <p>פתרונות דיגיטליים מקצועיים לעסקים וארגונים. אתרים מוכנים למכירה ושירותי פיתוח מותאמים אישית.</p>
+      </div>
+      <div class="footer-section">
+        <h3 class="footer-title">קישורים מהירים</h3>
+        <div class="footer-links">
+          <a class="footer-link">דף הבית</a>
+          <a class="footer-link">אתרים למכירה</a>
+          <a class="footer-link">שירותי פיתוח</a>
+          <a class="footer-link">אודות</a>
+          <a class="footer-link">צור קשר</a>
+        </div>
+      </div>
+      <div class="footer-section">
+        <h3 class="footer-title">צור קשר</h3>
+        <div class="footer-links">
+          <a class="footer-link">טלפון: 050-1234567</a>
+          <a class="footer-link">דוא"ל: info@webcube.co.il</a>
+          <a class="footer-link">כתובת: רחוב הראשונים 123, תל אביב</a>
+        </div>
+      </div>
+    </div>
+    <div class="copyright">
+      &copy; 2025 WebCube. כל הזכויות שמורות.
+    </div>
+  </footer>
+  
+  <script>
+    // משתנים גלובליים לשליטה בקוביה
+    let cubeRotateX = 0;
+    let cubeRotateY = 0;
+    const cube = document.getElementById('cube');
+    
+    // פונקציות לשליטה בקוביה
+    function rotateCube(direction) {
+      switch(direction) {
+        case 'left':
+          cubeRotateY -= 90;
+          break;
+        case 'right':
+          cubeRotateY += 90;
+          break;
+        case 'up':
+          cubeRotateX -= 90;
+          break;
+        case 'down':
+          cubeRotateX += 90;
+          break;
+      }
+      updateCubeRotation();
+    }
+    
+    function resetCube() {
+      cubeRotateX = 0;
+      cubeRotateY = 0;
+      updateCubeRotation();
+    }
+    
+    function updateCubeRotation() {
+      cube.style.transform = `rotateX(${cubeRotateX}deg) rotateY(${cubeRotateY}deg)`;
+      cube.style.animation = 'none';
+    }
+    
+    // פונקציה להצגת מודאל עם גלריית תמונות
+    function showModal(title, description, price, imageUrl) {
+      document.getElementById('modalTitle').textContent = title;
+      document.getElementById('modalDescription').textContent = description;
+      document.getElementById('modalPrice').textContent = '₪' + price;
+      document.getElementById('modalImage').style.backgroundImage = `url('${imageUrl}')`;
+      
+      // יצירת גלריית תמונות
+      const gallery = document.getElementById('modalGallery');
+      gallery.innerHTML = '';
+      
+      // תמונות לדוגמה - במקרה אמיתי אלה יגיעו מהשרת
+      const demoImages = [
+        imageUrl,
+        'https://raw.githubusercontent.com/VIPOCONNECT/vipo-24/refs/heads/main/images/image2.webp',
+        'https://raw.githubusercontent.com/VIPOCONNECT/vipo-24/refs/heads/main/images/image3.webp',
+        'https://raw.githubusercontent.com/VIPOCONNECT/vipo-24/refs/heads/main/images/image4.webp'
+      ];
+      
+      demoImages.forEach((img, index) => {
+        const galleryItem = document.createElement('div');
+        galleryItem.className = 'gallery-item' + (index === 0 ? ' active' : '');
+        galleryItem.style.backgroundImage = `url('${img}')`;
+        galleryItem.onclick = function() {
+          document.getElementById('modalImage').style.backgroundImage = `url('${img}')`;
+          document.querySelectorAll('.gallery-item').forEach(item => item.classList.remove('active'));
+          this.classList.add('active');
+        };
+        gallery.appendChild(galleryItem);
+      });
+      
+      document.getElementById('productModal').style.display = 'block';
+      document.body.style.overflow = 'hidden';
+    }
+    
+    // פונקציות לצ'אט תמיכה
+    function toggleChat() {
+      const chatWindow = document.getElementById('chatWindow');
+      if (chatWindow.style.display === 'block') {
+        chatWindow.style.display = 'none';
+      } else {
+        chatWindow.style.display = 'block';
+        document.getElementById('chatInput').focus();
+      }
+    }
+    
+    function sendMessage() {
+      const input = document.getElementById('chatInput');
+      const message = input.value.trim();
+      
+      if (message) {
+        const chatBody = document.getElementById('chatBody');
+        
+        // הוספת הודעת המשתמש
+        const userMessage = document.createElement('div');
+        userMessage.className = 'message user';
+        userMessage.textContent = message;
+        chatBody.appendChild(userMessage);
+        
+        // ניקוי שדה הקלט
+        input.value = '';
+        
+        // גלילה לתחתית הצ'אט
+        chatBody.scrollTop = chatBody.scrollHeight;
+        
+        // הוספת הודעת מערכת אוטומטית לאחר השהייה קצרה
+        setTimeout(() => {
+          const supportMessage = document.createElement('div');
+          supportMessage.className = 'message support';
+          supportMessage.textContent = 'תודה על פנייתך! נציג יחזור אליך בהקדם.';
+          chatBody.appendChild(supportMessage);
+          chatBody.scrollTop = chatBody.scrollHeight;
+        }, 1000);
+      }
+    }
+    
+    // האזנה לאירוע לחיצה על Enter בשדה הצ'אט
+    document.getElementById('chatInput').addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') {
+        sendMessage();
+      }
+    });
+    
+    // פונקציות קיימות
+    function closeModal() {
+      document.getElementById('productModal').style.display = 'none';
+      document.body.style.overflow = 'auto';
+    }
+    
+    // Close modal when clicking outside of it
+    window.onclick = function(event) {
+      const modal = document.getElementById('productModal');
+      if (event.target == modal) {
+        closeModal();
+      }
+    }
+    
+    // Pause cube rotation when hovering over it
+    document.querySelector('.cube').addEventListener('mouseenter', function() {
+      if (this.style.animation !== 'none') {
+        this.style.animationPlayState = 'paused';
+      }
+    });
+    
+    document.querySelector('.cube').addEventListener('mouseleave', function() {
+      if (this.style.animation !== 'none') {
+        this.style.animationPlayState = 'running';
+      }
+    });
+  </script>
+</body>
+</html>
